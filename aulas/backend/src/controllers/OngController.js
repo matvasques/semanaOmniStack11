@@ -1,6 +1,8 @@
 const crypto = require('crypto');
 const connection = require('../database/connection');
 
+const generateUniqueId = require('../utils/generateUniqueId');
+
 module.exports = {
     async index(request, response){
         const ongs = await connection('ongs').select('*');
@@ -11,7 +13,7 @@ module.exports = {
     async create(request, response){
         const {name, email, whatsapp, city, uf} = request.body; //recuperando os dados do usuario
 
-        const id = crypto.randomBytes(4).toString('HEX'); //criando a id automatico
+        const id = generateUniqueId();
     
         //inserindo as infos na tabela ong do db, que criamos no migration. Obs: o migration nmos permite criar a tabela via JS, depois ele 'migra' para sql
         await connection('ongs').insert({
